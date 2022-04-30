@@ -1,0 +1,16 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+{% include 'head.html' %}
+<body class="gray">
+    <div id="wrapper">
+        {%include 'navbar.html'%}
+        {%block body%}
+
+
+        {%endblock%}
+        {%include 'footer.html'%}
+    </div>
+{% include 'scripts.html'%}
+</body>
+</html>
