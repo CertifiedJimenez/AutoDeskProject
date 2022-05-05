@@ -3,7 +3,7 @@
 <!-- Intro Banner
 ================================================== -->
 <!-- add class "disable-gradient" to enable consistent background overlay -->
-<div class="intro-banner" data-background-image="images/home-background.jpg">
+<div class="intro-banner" data-background-image="/static/images/home-background.jpg">
 	<div class="container">
 		
 		<!-- Intro Headline -->
@@ -46,6 +46,18 @@
 				</div>
 			</div>
 		</div>
+
+		<script>
+			$(document).ready(function() {
+				//Built in search function
+				$( "#search-btn" ).click(function() {					
+					Job = $('#intro-keywords').val()
+					Location = $('#autocomplete-input').val()
+					search_url = '/Search/'+Job+'/'+Location
+					window.open(search_url,"_self")
+				});
+			});
+		</script>
 
 		<!-- Stats -->
 		<div class="row">
@@ -795,24 +807,5 @@
 </div>
 <!-- Membership Plans / End-->
 
-<script type="text/javascript">
-
-	  $( "#search-btn" ).click(function() {
-		  console.log('test')
-		Job = $('#intro-keywords')
-		Location = = $('#autocomplete-input')
-		search_url = 'window.location.href=JobSearch/JobList/'+Job+'/'+Location
-		console.log(search_url)
-		return search_url
-	  });
-
-	{% comment %} function search(){
-		Job = $('#intro-keywords')
-		Location = = $('#autocomplete-input')
-		search_url = 'window.location.href=JobSearch/JobList/'+Job+'/'+Location
-		console.log(search_url)
-		return search_url
-	}  {% endcomment %}
-</script>
 
 {%endblock%}

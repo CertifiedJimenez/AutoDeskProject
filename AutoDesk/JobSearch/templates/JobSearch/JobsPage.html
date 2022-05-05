@@ -142,6 +142,40 @@
 		<div class="full-page-content-inner">
 
 			<h3 class="page-title">Search Results</h3>
+			<div class="content with-padding padding-bottom-10">
+				<div class="row">
+
+					<div class="intro-search-field" style="border-right: 0">
+						<input id="intro-keywords" class="with-border" type="text" placeholder="Job Title or Keywords" value={{searchParams.title}}>
+					</div>
+
+					<div class="intro-search-field with-autocomplete" style="border-right: 0">
+						<div class="input-with-icon">
+							<input id="location"class="with-border" type="text" placeholder="Online Job" value={{searchParams.location}}>
+							<i class="icon-material-outline-location-on"></i>
+							</span>
+						</div>
+						<div class="intro-search-field" style="border-right: 0">
+							<button id="search-btn" class="button ripple-effect">Search</button>
+						</div>
+					</div>
+
+					<script>
+
+						$(document).ready(function() {
+							let url = new URL(window.location.href);
+							//Built in search function
+							$( "#search-btn" ).click(function() {					
+								Job = $('#intro-keywords').val()
+								Location = $('#location').val()
+								search_url = '/Search/'+Job+'/'+Location
+								window.open(search_url,"_self")
+							});
+						});
+					</script>
+
+				</div>
+			</div>
 
 			<div class="notify-box margin-top-15">
 				<div class="switch-container">
@@ -163,32 +197,33 @@
 				
 				{% for jobs in jobList%}
 				<!-- Job Listing -->
-				<a href="single-job-page.html" class="job-listing">
+
+				<a href="{{searchParams.location}}/{{jobs.job_id}}" target="_blank" class="job-listing">
 
 					<!-- Job Listing Details -->
 					<div class="job-listing-details">
 
 						<!-- Logo -->
 						<div class="job-listing-company-logo">
-							<img src="{{jobs.6}}" alt="">
+							<img src="{{jobs.job_company_logo}}" alt="">
 						</div>
 
 						<!-- Details -->
 						<div class="job-listing-description">
-							<h3 class="job-listing-title">{{jobs.0}}</h3>
+							<h3 class="job-listing-title">{{jobs.job_title}}</h3>
 
 							<!-- Job Listing Footer -->
 							<div class="job-listing-footer">
 								<ul>
-									<li><i class="icon-material-outline-business"></i> {{jobs.3}}
-									{% if jobs.5 %}
+									<li><i class="icon-material-outline-business"></i> {{jobs.job_company}}
+									{% if jobs.job_verified %}
 									<div class="verified-badge" title="Verified Employer" data-tippy-placement="top"></div>
 									{% endif%}
 									</li>
-									<li><i class="icon-material-outline-location-on"></i>{{jobs.4}}</li>
+									<li><i class="icon-material-outline-location-on"></i>{{jobs.job_location}}</li>
 									<li><i class="icon-material-outline-business-center"></i> Full Time</li>
-									<li><i class="icon-material-outline-access-time"></i> {{jobs.2}}</li>
-									<li><i class="icon-material-outline-account-balance-wallet"></i> {{jobs.1}}</li>
+									<li><i class="icon-material-outline-access-time"></i> {{jobs.job_posted}}</li>
+									<li><i class="icon-material-outline-account-balance-wallet"></i> {{jobs.job_salary}}</li>
 								</ul>
 							</div>
 						</div>
@@ -250,7 +285,6 @@
 				<div class="clearfix"></div>
 			</div>
 			<!-- Footer / End -->
-
 		</div>
 	</div>
 	<!-- Full Page Content / End -->
@@ -276,6 +310,5 @@
 
 </div>
 <!-- Wrapper / End -->
-
 
 {%endblock%}

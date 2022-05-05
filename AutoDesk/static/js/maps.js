@@ -42,6 +42,23 @@
       ];
 
 
+    //   function getlocation(){
+    //   var geocoder = new google.maps.Geocoder();
+    //   var address = 'cuba'
+    //   var current_cordinates 
+
+    //   geocoder.geocode( { 'address': address}, function(results, status) {
+
+    //   if (status == google.maps.GeocoderStatus.OK) {
+    //       var current_latitude = results[0].geometry.location.lat();
+    //       var current_longitude = results[0].geometry.location.lng();
+    //       current_cordinates = current_latitude+', '+current_longitude
+    //       } 
+    //   });
+      
+    //   return
+    // }
+
       // Map Attributes
       // ----------------------------------------------- //
 
@@ -65,7 +82,7 @@
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: zoomLevel,
         scrollwheel: scrollEnabled,
-        center: new google.maps.LatLng(37.754929, -122.429416),
+        center: new google.maps.LatLng(51.4911347914993, -0.1340526516803491),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         zoomControl: false,
         mapTypeControl: false,
