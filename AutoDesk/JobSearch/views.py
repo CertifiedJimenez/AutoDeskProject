@@ -13,65 +13,74 @@ def Search(request):
 
 
 
+
+
+#Reed api - aa04a771-9788-4d0b-bb72-44b7d5d2f234 
+
+
+
+
 jobList = []
-def JobList(request,title,location):
+def JobList(request,title,location,page_no):
 
-    #Job Type
-    jobtype = title
-    joblocation = location
-    page = requests.get('https://www.reed.co.uk/jobs/'+jobtype+'pe-jobs-in-'+joblocation)
-    soup = BeautifulSoup(page.text,'html.parser')
-
-    #search result find_all(params)
-    results = soup.find_all('article', class_ = 'job-result')
-
+    # === Total Jobs searches per page === #
     jobList = []
-    for jobs in results:
+    maxPageLoad = 1
 
-        try:
-            job_company_logo = jobs.img['data-src']
-            job_company_logo = job_company_logo[:-15] 
-        except:
-            job_company_logo = ''
+    for pageLoad in range(maxPageLoad):
+        #Job Type
+        jobtype = title
+        joblocation = location
+        page = requests.get('https://www.reed.co.uk/jobs/'+jobtype+'pe-jobs-in-'+joblocation+'?pageno='+str(page_no))
+        soup = BeautifulSoup(page.text,'html.parser')
 
-        job_id = jobs.get('id')
-        job_id = job_id.replace("jobSection", "") 
+        #search result find_all(params)
+        results = soup.find_all('article', class_ = 'job-result-card')
 
-        job_salary = jobs.find('li', class_ ='salary').text
-        job_salary = job_salary.split()[:3]
-        job_salary = ' '.join(job_salary)
 
-        job_posted = jobs.find('div', class_ ='posted-by').text
-        job_posted = job_posted.split()[:3]
-        job_posted = ' '.join(job_posted)
+        for jobs in results:
+            try:
+                job_company_logo = jobs.img['data-src']
+                job_company_logo = job_company_logo[:-15] 
+            except:
+                job_company_logo = ''
 
-        job_entry = {
-        'job_title': jobs.find('h3', class_ = 'title').find('a').text, 
-        'job_salary': job_salary,
-        'job_posted': job_posted,
-        'job_company': jobs.find('div', class_ ='posted-by').find('a').text, 
-        'job_location': jobs.find('li', class_ ='location').text, 
-        'job_verified': False, 
-        'job_link': jobs.find("a").get('href'),
-        'job_id': job_id,
-        'job_company_logo': job_company_logo
-        }
+            job_id = jobs.get('id')
+            job_id = job_id.replace("jobSection", "") 
 
-        #print(job_entry)
+            job_salary = jobs.find('li', class_ ='job-metadata__item--salary').text
+            job_salary = job_salary.split()[:3]
+            job_salary = ' '.join(job_salary)
 
-        jobList.append(job_entry)
+            job_posted = jobs.find('div', class_ ='job-result-heading__posted-by').text
+            job_posted = job_posted.split()[:3]
+            job_posted = ' '.join(job_posted)
+
+            job_entry = {
+            'job_title': jobs.find('h3', class_ = 'job-result-heading__title').find('a').text, 
+            'job_salary': job_salary,
+            'job_posted': job_posted,
+            'job_company': jobs.find('div', class_ ='job-result-heading__posted-by').find('a').text, 
+            'job_location': jobs.find('li', class_ ='job-metadata__item--location').text, 
+            'job_verified': False, 
+            'job_link': jobs.find("a").get('href'),
+            'job_id': job_id,
+            'job_company_logo': job_company_logo
+            }
+
+            #print(job_entry)
+
+            jobList.append(job_entry)
+            pageLoad += 1
+            page_no += 1
         
-        if len(jobList) >= 5:
-            break
 
-    
-    searchParams ={'title':title, 'location':location}
+    searchParams ={'title':title, 'location':location, 'page_no':page_no}
     context = {
         'jobList': jobList,
         'searchParams': searchParams
     }
     return render(request,'JobSearch/JobsPage.html',context)
-
 
 
 def JobPage(request,title,location,Id):
@@ -94,6 +103,17 @@ def JobPage(request,title,location,Id):
     job_salary = job_salary.split()[:3]
     job_salary = ' '.join(job_salary)
 
+    job_description = results.find('div', class_ ='description')
+    job_description = job_description.find('span')
+    clear_spaces = ""
+    for elementshtml in job_description:
+        clear_spaces += str(elementshtml)
+    job_description = clear_spaces
+        
+
+    
+    #function to covert html
+
     try:
         job_company_logo = results.img['data-src']
         job_company_logo = job_company_logo[:-15] 
@@ -105,16 +125,13 @@ def JobPage(request,title,location,Id):
     'job_title': results.find('h1').text, 
     'job_location': results.find('div', class_ ='location').text, 
     'job_type': results.find('div', class_ ='time').text, 
-    'job_description': results.find('div', class_ ='description').text,
+    'job_description': job_description,
     'job_salary': job_salary,
     'job_company_logo':job_company_logo,
     'job_posted':job_posted,
     'job_company': results.find('div', class_ ='posted').find('a').text, 
     'job_link': 'https://www.reed.co.uk/jobs/fill/'+str(Id)
     }
-
-    print(job_entry)
-
     
     context = {'job': job_entry,}
     return render(request,'JobSearch/FullJobsPage.html',context)

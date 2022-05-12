@@ -1,7 +1,37 @@
+
 (function($){
-    "use strict";
+    // "use strict";
+
+
+    console.log('die')
+
+    var current_cordinates 
+
+    function setCenterLocation(text,object){
+    var geocoder = new google.maps.Geocoder();
+    var address = text
+
+    geocoder.geocode( { 'address': address}, function(results, status) {
+
+    if (status == google.maps.GeocoderStatus.OK) {
+        var current_latitude = results[0].geometry.location.lat();
+        var current_longitude = results[0].geometry.location.lng();
+         current_cordinates = current_latitude+', '+current_longitude
+         object.setCenter(new google.maps.LatLng(current_latitude, current_longitude));
+        } 
+    });
+    
+    return current_cordinates;
+    }
+
+
+
+
+
 
     function mainMap() {
+      setTimeout(function() {  
+
 
       // Locations
       // ----------------------------------------------- //
@@ -25,39 +55,27 @@
             '</a>')
       }
 
+
+
       // Locations
-      var locations = [
-        [ locationData('single-job-page.html','images/company-logo-01.png',"Hexagon",'Bilingual Event Support Specialist', 'verified'), 37.788181, -122.461270, 5, ''],
-        [ locationData('single-job-page.html','images/company-logo-05.png',"Laxo",'Competition Law Officer', 'not-verified'), 37.750812, -122.471934, 2, ''],
-        [ locationData('single-job-page.html','images/company-logo-02.png',"Coffee",'Barista and Cashier', 'not-verified'), 37.735609, -122.458201, 3, ''],
-        [ locationData('single-job-page.html','images/company-logo-03.png',"King",'Restaurant General Manager', 'verified'), 37.745382, -122.500773, 4, ''],
-        [ locationData('single-job-page.html','images/company-logo-05.png',"Skyist",'International Marketing Coordinator', 'not-verified'), 37.762963, -122.388506, 1, ''],
-        [ locationData('single-job-page.html','images/company-logo-05.png',"Podous",'Construction Labourers', 'not-verified'), 37.801745, -122.409085, 6, ''],
-        [ locationData('single-job-page.html','images/company-logo-04.png',"Mates",'Administrative Assistant', 'not-verified'), 37.730511, -122.383679, 7, ''],
-        [ locationData('single-job-page.html','images/company-logo-06.png',"Trideo",'Human Resources Consultant', 'not-verified'), 37.750457, -122.478779, 8, ''],
-        [ locationData('single-job-page.html','images/company-logo-06.png',"Trideo",'International Marketing Specialist', 'not-verified'), 37.732810, -122.415951, 9, ''],
-        [ locationData('single-job-page.html','images/company-logo-02.png',"Coffee",'Terrain Cafe Barista', 'not-verified'), 37.733625, -122.378872, 10, ''],
-        [ locationData('#','images/company-logo-05.png',"Kinte",'Skilled Labourer', 'not-verified'), 37.723578, -122.457493, 11, ''],
-        [ locationData('single-job-page.html','images/company-logo-05.png',"Alilia",'Healthcare Claims Advisor', 'not-verified'), 37.751543, -122.418354, 12, '']
-      ];
+      var locations = []
+      // var locations = translate(locationData);
+      // locations = [
+      //   [ locationData('single-job-page.html','images/company-logo-01.png',"Hexagon",'Bilingual Event Support Specialist', 'verified'), 53.41063159999999, -2.1575332, 5, ''],
+      //   [ locationData('single-job-page.html','images/company-logo-01.png',"Hexagon",'Bilingual Event Support Specialist', 'verified'), 37.788181, -122.461270, 5, ''],
+      // ];
 
 
-    //   function getlocation(){
-    //   var geocoder = new google.maps.Geocoder();
-    //   var address = 'cuba'
-    //   var current_cordinates 
-
-    //   geocoder.geocode( { 'address': address}, function(results, status) {
-
-    //   if (status == google.maps.GeocoderStatus.OK) {
-    //       var current_latitude = results[0].geometry.location.lat();
-    //       var current_longitude = results[0].geometry.location.lng();
-    //       current_cordinates = current_latitude+', '+current_longitude
-    //       } 
-    //   });
+ 
+      for (let i = 0; i < localised_jobs.length; i++) {
+        new_location = localised_jobs[i][3]
+        new_location = new_location.replace(/(\r\n|\n|\r)/gm, ",");
+        new_location = new_location.replace(/\s/g, "")
+          
+          locations.push([locationData('single-job-page.html',localised_jobs[i][0],localised_jobs[i][1],localised_jobs[i][2], 'verified'), localised_jobs[i][4], localised_jobs[i][5], 5, ''])
+      }      
       
-    //   return
-    // }
+
 
       // Map Attributes
       // ----------------------------------------------- //
@@ -76,8 +94,7 @@
       } else {
         var scrollEnabled = false;
       }
-
-
+      
       // Main Map
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: zoomLevel,
@@ -97,6 +114,9 @@
 
       });
 
+
+      //change location
+      setCenterLocation(search_location,map)
 
       // Infobox
       // ----------------------------------------------- //
@@ -139,8 +159,8 @@
 
 
       var markerIco;
+      
       for (i = 0; i < locations.length; i++) {
-
         markerIco = locations[i][4];
 
         var overlaypositions = new google.maps.LatLng(locations[i][1], locations[i][2]),
@@ -255,7 +275,7 @@
               });
           }
       }
-
+    }, 2500)
     }
 
 
@@ -274,10 +294,13 @@
 
     function singleListingMap() {
 
+      
+
       var myLatlng = new google.maps.LatLng({lng: $( '#singleListingMap' ).data('longitude'),lat: $( '#singleListingMap' ).data('latitude'), });
 
+
       var single_map = new google.maps.Map(document.getElementById('singleListingMap'), {
-        zoom: 15,
+        zoom: 13,
         center: myLatlng,
         scrollwheel: false,
         zoomControl: false,
@@ -288,6 +311,11 @@
         streetViewControl: false,
         styles:  [{"featureType":"poi","elementType":"labels.text.fill","stylers":[{"color":"#747474"},{"lightness":"23"}]},{"featureType":"poi.attraction","elementType":"geometry.fill","stylers":[{"color":"#f38eb0"}]},{"featureType":"poi.government","elementType":"geometry.fill","stylers":[{"color":"#ced7db"}]},{"featureType":"poi.medical","elementType":"geometry.fill","stylers":[{"color":"#ffa5a8"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#c7e5c8"}]},{"featureType":"poi.place_of_worship","elementType":"geometry.fill","stylers":[{"color":"#d6cbc7"}]},{"featureType":"poi.school","elementType":"geometry.fill","stylers":[{"color":"#c4c9e8"}]},{"featureType":"poi.sports_complex","elementType":"geometry.fill","stylers":[{"color":"#b1eaf1"}]},{"featureType":"road","elementType":"geometry","stylers":[{"lightness":"100"}]},{"featureType":"road","elementType":"labels","stylers":[{"visibility":"off"},{"lightness":"100"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffd4a5"}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#ffe9d2"}]},{"featureType":"road.local","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.local","elementType":"geometry.fill","stylers":[{"weight":"3.00"}]},{"featureType":"road.local","elementType":"geometry.stroke","stylers":[{"weight":"0.30"}]},{"featureType":"road.local","elementType":"labels.text","stylers":[{"visibility":"on"}]},{"featureType":"road.local","elementType":"labels.text.fill","stylers":[{"color":"#747474"},{"lightness":"36"}]},{"featureType":"road.local","elementType":"labels.text.stroke","stylers":[{"color":"#e9e5dc"},{"lightness":"30"}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"visibility":"on"},{"lightness":"100"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#d2e7f7"}]}]
       });
+
+
+      //assign location
+      setCenterLocation(search_location,single_map)
+
 
       // Steet View Button
       $('#streetView').click(function(e){
@@ -334,7 +362,7 @@
       var singleMapIco =  "<i class='"+$('#singleListingMap').data('map-icon')+"'></i>";
 
       new CustomMarker(
-        myLatlng,
+        current_cordinates,
         single_map,
         {
           marker_id: '1'
@@ -367,6 +395,8 @@
 
     CustomMarker.prototype = new google.maps.OverlayView();
 
+
+    //when drawn
     CustomMarker.prototype.draw = function() {
 
       var self = this;
@@ -417,8 +447,7 @@
 
     CustomMarker.prototype.getPosition = function() { return this.latlng; };
 
+
     // -------------- Custom Map Marker / End -------------- //
-
-
 
 })(this.jQuery);

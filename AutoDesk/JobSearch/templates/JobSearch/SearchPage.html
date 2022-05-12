@@ -13,7 +13,7 @@
 					<h3>
 						<strong>Hire experts or be hired for any job, any time.</strong>
 						<br>
-						<span>Thousands of small businesses use <strong class="color">AutoDesk</strong> to turn their ideas into reality.</span>
+						<span>Thousands of small businesses use <strong class="color">Mesh</strong> to turn their ideas into reality.</span>
 					</h3>
 				</div>
 			</div>
@@ -48,12 +48,13 @@
 		</div>
 
 		<script>
+
 			$(document).ready(function() {
 				//Built in search function
 				$( "#search-btn" ).click(function() {					
 					Job = $('#intro-keywords').val()
 					Location = $('#autocomplete-input').val()
-					search_url = '/Search/'+Job+'/'+Location
+					search_url = '/Search/'+Job+'/'+Location+'/1'
 					window.open(search_url,"_self")
 				});
 			});

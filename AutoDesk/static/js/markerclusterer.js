@@ -71,7 +71,6 @@ function MarkerClusterer(map, opt_markers, opt_options) {
   // there is no point going ahead :)
   this.extend(MarkerClusterer, google.maps.OverlayView);
   this.map_ = map;
-
   /**
    * @type {Array.<google.maps.Marker>}
    * @private

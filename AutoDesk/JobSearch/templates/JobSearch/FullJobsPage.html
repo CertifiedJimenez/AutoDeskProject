@@ -30,6 +30,11 @@
 	</div>
 </div>
 
+<script>
+	var search_location = `{{job.job_location}}`
+	search_location = search_location.replace(/(\r\n|\n|\r)/gm, "");
+	console.log(search_location)
+</script>
 
 <!-- Page Content
 ================================================== -->
@@ -40,7 +45,7 @@
 
 			<div class="single-page-section">
 				<h3 class="margin-bottom-25">Job Description</h3>
-                {{job.job_description}}
+                {{job.job_description|safe }}
             </div>
 
 			<div class="single-page-section">
@@ -123,7 +128,7 @@
 		<div class="col-xl-4 col-lg-4">
 			<div class="sidebar-container">
 
-				<a href="{{job.job_link}}" target="_blank" class="apply-now-button popup-with-zoom-anim">Apply Now <i class="icon-material-outline-arrow-right-alt"></i></a>
+				<a href="{{job.job_link}}" target="_blank" class="apply-now-button">Apply Now<i class="icon-material-outline-arrow-right-alt"></i></a>
 					
 				<!-- Sidebar Widget -->
 				<div class="sidebar-widget">
