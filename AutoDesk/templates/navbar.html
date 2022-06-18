@@ -130,6 +130,9 @@
 
 
 			<!-- Right Side Content / End -->
+
+			{% if request.user.is_authenticated %}
+			
 			<div class="right-side">
 
 				<!--  User Notifications -->
@@ -323,6 +326,7 @@
 
 			</div>
 			<!-- Right Side Content / End -->
+			{% endif %}
 
 		</div>
 	</div>

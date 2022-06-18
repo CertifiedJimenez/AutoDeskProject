@@ -33,6 +33,10 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'JobSearch.apps.JobsearchConfig',
+    'JobListing.apps.JoblistingConfig',
+    'APIControl.apps.ApicontrolConfig',
+    'HomePage.apps.HomepageConfig',
+    'DataHandler.apps.DatahandlerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

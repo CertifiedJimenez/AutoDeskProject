@@ -30,9 +30,6 @@
 
 
     function mainMap() {
-      setTimeout(function() {  
-
-
       // Locations
       // ----------------------------------------------- //
       var ib = new InfoBox();
@@ -59,23 +56,9 @@
 
       // Locations
       var locations = []
-      // var locations = translate(locationData);
-      // locations = [
-      //   [ locationData('single-job-page.html','images/company-logo-01.png',"Hexagon",'Bilingual Event Support Specialist', 'verified'), 53.41063159999999, -2.1575332, 5, ''],
-      //   [ locationData('single-job-page.html','images/company-logo-01.png',"Hexagon",'Bilingual Event Support Specialist', 'verified'), 37.788181, -122.461270, 5, ''],
-      // ];
-
-
- 
       for (let i = 0; i < localised_jobs.length; i++) {
-        new_location = localised_jobs[i][3]
-        new_location = new_location.replace(/(\r\n|\n|\r)/gm, ",");
-        new_location = new_location.replace(/\s/g, "")
-          
           locations.push([locationData('single-job-page.html',localised_jobs[i][0],localised_jobs[i][1],localised_jobs[i][2], 'verified'), localised_jobs[i][4], localised_jobs[i][5], 5, ''])
       }      
-      
-
 
       // Map Attributes
       // ----------------------------------------------- //
@@ -275,9 +258,7 @@
               });
           }
       }
-    }, 2500)
     }
-
 
     // Map Init
     var map =  document.getElementById('map');
@@ -316,6 +297,8 @@
       //assign location
       setCenterLocation(search_location,single_map)
 
+
+      search_location
 
       // Steet View Button
       $('#streetView').click(function(e){

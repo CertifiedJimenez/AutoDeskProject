@@ -1,0 +1,376 @@
+{% extends 'base.html' %}
+{%block body%}
+<!-- Page Content
+================================================== -->
+<div class="full-page-container with-map">
+
+	<div class="full-page-sidebar hidden-sidebar">
+		<div class="full-page-sidebar-inner" data-simplebar>
+
+			<div class="sidebar-container">
+
+				<!-- Location -->
+				{% comment %} <div class="sidebar-widget">
+					<h3>Location</h3>
+					<div class="input-with-icon">
+						<div id="autocomplete-container">
+							<input id="autocomplete-input" type="text" placeholder="Location">
+						</div>
+						<i class="icon-material-outline-location-on"></i>
+					</div>
+				</div> {% endcomment %}
+
+				<!-- Keywords -->
+				{% comment %} <div class="sidebar-widget">
+					<h3>Keywords</h3>
+					<div class="keywords-container">
+						<div class="keyword-input-container">
+							<input type="text" class="keyword-input" placeholder="e.g. job title"/>
+							<button class="keyword-input-button ripple-effect"><i class="icon-material-outline-add"></i></button>
+						</div>
+						<div class="keywords-list"><!-- keywords go here --></div>
+						<div class="clearfix"></div>
+					</div>
+				</div> {% endcomment %}
+				
+				<!-- Category -->
+				{% comment %} <div class="sidebar-widget">
+					<h3>Category</h3>
+					<select class="selectpicker default" multiple data-selected-text-format="count" data-size="7" title="All Categories" >
+						<option>Admin Support</option>
+						<option>Customer Service</option>
+						<option>Data Analytics</option>
+						<option>Design & Creative</option>
+						<option>Legal</option>
+						<option>Software Developing</option>
+						<option>IT & Networking</option>
+						<option>Writing</option>
+						<option>Translation</option>
+						<option>Sales & Marketing</option>
+					</select>
+				</div> {% endcomment %}
+				
+				<!-- Job Types -->
+				{% comment %} <div class="sidebar-widget">
+					<h3>Job Type</h3>
+
+					<div class="switches-list">
+						<div class="switch-container">
+							<label class="switch"><input type="checkbox"><span class="switch-button"></span> Freelance</label>
+						</div>
+
+						<div class="switch-container">
+							<label class="switch"><input type="checkbox"><span class="switch-button"></span> Full Time</label>
+						</div>
+
+						<div class="switch-container">
+							<label class="switch"><input type="checkbox"><span class="switch-button"></span> Part Time</label>
+						</div>
+
+						<div class="switch-container">
+							<label class="switch"><input type="checkbox"><span class="switch-button"></span> Internship</label>
+						</div>
+						<div class="switch-container">
+							<label class="switch"><input type="checkbox"><span class="switch-button"></span> Temporary</label>
+						</div>
+					</div>
+
+				</div> {% endcomment %}
+
+				<!-- Salary -->
+				<div class="sidebar-widget">
+					<h3>Salary</h3>
+					<div class="margin-top-55"></div>
+
+					<!-- Range Slider -->
+					<input id="SalaryRange" class="range-slider" type="text" value="" data-slider-currency="£" data-slider-min="10000" data-slider-max="100000" data-slider-step="100" data-slider-value="[10000,100000]"/>
+				</div>
+
+				<!-- Tags -->
+				{% comment %} <div class="sidebar-widget">
+					<h3>Tags</h3>
+
+					<div class="tags-container">
+						<div class="tag">
+							<input type="checkbox" id="tag1"/>
+							<label for="tag1">front-end dev</label>
+						</div>
+						<div class="tag">
+							<input type="checkbox" id="tag2"/>
+							<label for="tag2">angular</label>
+						</div>
+						<div class="tag">
+							<input type="checkbox" id="tag3"/>
+							<label for="tag3">react</label>
+						</div>
+						<div class="tag">
+							<input type="checkbox" id="tag4"/>
+							<label for="tag4">vue js</label>
+						</div>
+						<div class="tag">
+							<input type="checkbox" id="tag5"/>
+							<label for="tag5">web apps</label>
+						</div>
+						<div class="tag">
+							<input type="checkbox" id="tag6"/>
+							<label for="tag6">design</label>
+						</div>
+						<div class="tag">
+							<input type="checkbox" id="tag7"/>
+							<label for="tag7">wordpress</label>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div> {% endcomment %}
+
+			</div>
+			<!-- Sidebar Container / End -->
+
+			<!-- Search Button -->
+			<div class="sidebar-search-button-container">
+				<button id="FilterSearch" class="button ripple-effect">Search</button>
+			</div>
+			<!-- Search Button / End-->
+
+		</div>
+	</div>
+	<!-- Full Page Sidebar / End -->
+	
+
+	<!-- Full Page Content -->
+	<div class="full-page-content-container" data-simplebar>
+		<div class="full-page-content-inner">
+
+			<h3 class="page-title">Search Results</h3>
+			<div class="content with-padding padding-bottom-10">
+				<div class="row">
+					<div class="intro-search-field" style="border-right: 0">
+						<input id="intro-keywords" class="with-border" type="text" placeholder="Job Title or Keywords" value="{{searchParams.title}}">
+					</div>
+
+					<div class="intro-search-field with-autocomplete" style="border-right: 0">
+						<div class="input-with-icon">
+							<input id="autocomplete-input" class="with-border" type="text" placeholder="Online Job" value="{{searchParams.location}}">
+							<i class="icon-material-outline-location-on input-customfield-icon"></i>
+							</span>
+						</div>
+						<div class="intro-search-field btn-custom-search" style="border-right: 0">
+							<button id="search-btn" class="button ripple-effect">Search</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="notify-box margin-top-15">
+				<div class="switch-container">
+					<label class="switch"><input type="checkbox"><span class="switch-button"></span><span class="switch-text">Turn on email alerts for this search</span></label>
+				</div>
+
+				<div class="sort-by">
+					<span>Sort by:</span>
+					<select class="selectpicker hide-tick">
+						<option>Relevance</option>
+						<option>Newest</option>
+						<option>Oldest</option>
+						<option>Random</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="listings-container compact-list-layout margin-top-35 margin-bottom-25">
+				
+				{% for jobs in Results %}
+				<!-- Job Listing -->
+				<a href="{% url 'JobListing:Listing' jobs.job_urlpath jobs.job_id %}" target="_blank" class="job-listing">
+					<!-- Job Listing Details -->
+					<div class="job-listing-details">
+						<!-- Logo -->
+						<div class="job-listing-company-logo">
+							<img src="{{jobs.job_company_logo}}" alt="">
+						</div>
+
+						<!-- Details -->
+						<div class="job-listing-description">
+							<h3 class="job-listing-title">{{jobs.job_title}}</h3>
+
+							<!-- Job Listing Footer -->
+							<div class="job-listing-footer">
+								<ul>
+									<li><i class="icon-material-outline-business"></i> {{jobs.job_company}}
+									{% if jobs.job_verified %}
+									<div class="verified-badge" title="Verified Employer" data-tippy-placement="top"></div>
+									{% endif%}
+									</li>
+									<li><i class="icon-material-outline-location-on"></i>{{jobs.job_location}}</li>
+									<li><i class="icon-material-outline-business-center"></i> Full Time</li>
+									<li><i class="icon-material-outline-access-time"></i> {{jobs.job_posted}}</li>
+									<li><i class="icon-material-outline-account-balance-wallet"></i> {{jobs.job_salary}}</li>
+								</ul>
+							</div>
+						</div>
+
+						<!-- Bookmark -->
+						<span class="bookmark-icon"></span>
+					</div>
+				</a>	
+				{% endfor %}
+			</div>
+
+			{% if searchParams.pagentation%}
+			<!-- Pagination -->
+			<div class="clearfix"></div>
+			<div class="pagination-container margin-top-20 margin-bottom-20">
+				<nav class="pagination">
+					<ul>
+						<li class="pagination-arrow"><a href="{{searchParams.page_index.0}}" class="ripple-effect"><i class="icon-material-outline-keyboard-arrow-left"></i></a></li>
+						{% if searchParams.page_no >= 3%}
+						<li><a href="1" class="ripple-effect">1</a></li>
+						<li><a href="{{searchParams.page_index.0}}" class="ripple-effect">{{searchParams.page_index.0}}</a></li>
+						<li><a class="ripple-effect  current-page">{{searchParams.page_no}}</a></li>
+						<li><a href="{{searchParams.page_index.1}}" class="ripple-effect">{{searchParams.page_index.1}}</a></li>
+						{%else%}
+							{% if searchParams.page_no == 1%}
+							<li><a href="#" class="ripple-effect  current-page">{{searchParams.page_no}}</a></li>
+							<li><a href="{{searchParams.page_index.1}}" class="ripple-effect">{{searchParams.page_index.1}}</a></li>
+							{% else %}
+							<li><a href="{{searchParams.page_index.0}}" class="ripple-effect">{{searchParams.page_index.0}}</a></li>
+							<li><a class="ripple-effect current-page">{{searchParams.page_no}}</a></li>
+							{%endif%}
+							<li><a href="{{searchParams.page_index.2}}" class="ripple-effect">{{searchParams.page_index.2}}</a></li>
+							<li><a href="{{searchParams.page_index.3}}" class="ripple-effect">{{searchParams.page_index.3}}</a></li>
+						{%endif%}
+						<li><a href="{{searchParams.page_index.4}}" class="ripple-effect">{{searchParams.page_index.4}}</a></li>
+						<li class="pagination-arrow"><a href="{{searchParams.page_index.1}}" class="ripple-effect"><i class="icon-material-outline-keyboard-arrow-right"></i></a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="clearfix"></div>
+			<!-- Pagination / End -->
+			{% endif %}
+
+			<!-- Footer -->
+			<div class="small-footer margin-top-15">
+				<div class="small-footer-copyrights">
+					© 2019 <strong>Hireo</strong>. All Rights Reserved.
+				</div>
+				<ul class="footer-social-links">
+					<li>
+						<a href="#" title="Facebook" data-tippy-placement="top">
+							<i class="icon-brand-facebook-f"></i>
+						</a>
+					</li>
+					<li>
+						<a href="#" title="Twitter" data-tippy-placement="top">
+							<i class="icon-brand-twitter"></i>
+						</a>
+					</li>
+					<li>
+						<a href="#" title="Google Plus" data-tippy-placement="top">
+							<i class="icon-brand-google-plus-g"></i>
+						</a>
+					</li>
+					<li>
+						<a href="#" title="LinkedIn" data-tippy-placement="top">
+							<i class="icon-brand-linkedin-in"></i>
+						</a>
+					</li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<!-- Footer / End -->
+		</div>
+	</div>
+	<!-- Full Page Content / End -->
+
+
+	<!-- Full Page Map -->
+	<div class="full-page-map-container">
+		
+		<!-- Enable Filters Button -->
+		<div class="filter-button-container">
+			<button id="FilterToggle" class="enable-filters-button">
+				<i class="enable-filters-button-icon"></i>
+				<span class="show-text">Show Filters</span>
+				<span class="hide-text">Hide Filters</span>
+			</button>
+			{% comment %} <div class="filter-button-tooltip">Click to expand sidebar with filters!</div> {% endcomment %}
+		</div>
+		
+		<!-- Map -->
+	    <div id="map" data-map-zoom="12" data-map-scroll="true"></div>
+	</div>
+	<!-- Full Page Map / End -->
+
+</div>
+<!-- Wrapper / End -->
+
+
+
+
+<script>
+	const csrftoken = '{{csrf_token}}'
+
+	var search_location = '{{searchParams.location}}'
+	$(document).ready(function() {
+
+		var FilterToggle = false
+		$('#FilterToggle').click(function() {	
+		if(FilterToggle){
+			$('.intro-search-field').show()
+			FilterToggle = false
+		}else{
+			$('.intro-search-field').hide()
+			FilterToggle = true
+		}
+		});
+
+		let url = new URL(window.location.href);
+		//Built in search function
+		$( "#search-btn" ).click(function() {					
+			Job = $('#intro-keywords').val()
+			Location = $('#location').val()
+			search_url = '/Search/'+Job+'/'+Location+'/1'
+			window.open(search_url,"_self")
+		});
+
+
+
+		$('#FilterSearch').click(function(){
+
+			//Salary Breakdown
+			Salary = $('#SalaryRange').attr('value')
+			SalaryRange = Salary.split(",");
+			console.log(SalaryRange)
+
+			data = {'valid':true, 'MinimumRange':SalaryRange[0], 'MaximumRange':SalaryRange[1]};
+
+			//Ajax Call
+			$.ajax({ 
+				type: "POST", 
+				url: "/Search/{{searchParams.title}}/{{searchParams.location}}/{{searchParams.page_no}}", 
+				headers: {'X-CSRFToken': csrftoken},
+				data: {"data": data},
+				success: function(){
+					location.reload();
+					console.log('run')
+				},
+				error: function(){
+					console.log('failed')
+				}
+			});						
+
+		});
+
+	});
+
+	//mini map checker
+	var localised_jobs = []
+	{% for jobs in Results %}
+	localised_jobs.push(['{{jobs.job_company_logo}}','{{jobs.job_company}}','{{jobs.job_title}}','{{jobs.job_location}}',{{jobs.coordinates.0}},{{jobs.coordinates.1}}])
+	{% endfor %}
+
+</script>
+
+
+{%endblock%}
+
