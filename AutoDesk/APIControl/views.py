@@ -1,4 +1,3 @@
-from ast import keyword
 import requests
 from requests.auth import HTTPBasicAuth
 from DataHandler.views import Job_Salary, Job_Posted, Job_Logo
@@ -41,7 +40,7 @@ def getGeoLocation(request,location):
             latitude = data['lat']
             longitude = data['lng']
             saved_location_value = [location,latitude,longitude] 
-        # saved_location.append(saved_location_value)
+        saved_location.append(saved_location_value)
         return latitude, longitude
 
 def ReedSearchAPI(request,title,location,page_no):
@@ -68,25 +67,25 @@ def ReedSearchAPI(request,title,location,page_no):
 
     #turn to JSON & API Context
     page = page.json()
-    max_page = page['totalResults']    
-    page = page['results']
-
+    max_page = page['totalResults']
     jobList = []
-    for job in page:
-        job_entry = {
-        'job_title': job['jobTitle'],
-        'job_urlpath': 1,
-        'job_salary': Job_Salary(request,job,1),
-        'job_posted': Job_Posted(job['date']),
-        'job_company': job['employerName'],
-        'job_location': job['locationName'],
-        'job_verified': False,
-        'job_link': job['jobUrl'],
-        'job_id':job['jobId'],
-        'job_company_logo': Job_Logo(job),
-        'coordinates': getGeoLocation(request,job['locationName'])
-        }
-        jobList.append(job_entry)
+    if max_page > 0:
+        page = page['results']    
+        for job in page:
+            job_entry = {
+            'job_title': job['jobTitle'],
+            'job_urlpath': 1,
+            'job_salary': Job_Salary(job),
+            'job_posted': Job_Posted(job['date']),
+            'job_company': job['employerName'],
+            'job_location': job['locationName'],
+            'job_verified': False,
+            'job_link': job['jobUrl'],
+            'job_id':job['jobId'],
+            'job_company_logo': Job_Logo(job),
+            'coordinates': getGeoLocation(request,job['locationName'])
+            }
+            jobList.append(job_entry)
     return jobList
 
 def LibrarySearchAPI(request,title,location,page_no):
@@ -98,35 +97,30 @@ def LibrarySearchAPI(request,title,location,page_no):
     Key = cv_library_api_key
 
     #allows for URL filteration
-    url = f'https://www.cv-library.co.uk/search-jobs-json?key={Key}&q={keywords}&geo={locationName}&distance=15&salarytype=annum'
+    url = f'https://www.cv-library.co.uk/search-jobs-json?key={Key}&q={keywords}&geo={locationName}&distance=15&salarytype=annum&tempperm=Permanent'
     page = requests.get(url,auth=HTTPBasicAuth(reed_api_key,'password'))
 
     #turn to JSON & API Context
     page = page.json()
-    max_page = page['total_entries']   
-    page = page['jobs']
- 
+    max_page = page['total_entries']  
     jobList = []
-    for job in page:
-        try:
-            Salary = Job_Salary(request,job['salary'],2)
-        except:
-            Salary = "Competative"
-
-        job_entry = {
-        'job_title': job['title'],
-        'job_urlpath': 2,
-        'job_salary': Salary,
-        'job_posted': Job_Posted(job['posted']),
-        'job_company': job['agency']['title'],
-        'job_location': job['location'],
-        'job_verified': False,
-        'job_link': '',
-        'job_id':job['id'],
-        'job_company_logo': Job_Logo(job),
-        'coordinates': getGeoLocation(request,job['location'])
-        }
-        jobList.append(job_entry)
+    if max_page > 0:
+        page = page['jobs']
+        for job in page:
+            job_entry = {
+            'job_title': job['title'],
+            'job_urlpath': 2,
+            'job_salary': Job_Salary(job),
+            'job_posted': Job_Posted(job['posted']),
+            'job_company': job['agency']['title'],
+            'job_location': job['location'],
+            'job_verified': False,
+            'job_link': '',
+            'job_id':job['id'],
+            'job_company_logo': Job_Logo(job),
+            'coordinates': getGeoLocation(request,job['location'])
+            }
+            jobList.append(job_entry)
     return jobList
 
 def ReedDetailsAPI(request,Id):
@@ -141,9 +135,9 @@ def ReedDetailsAPI(request,Id):
     'job_location': page['locationName'], 
     'job_type': page['contractType'], 
     'job_description': page['jobDescription'],
-    'job_salary': Job_Salary(request,page,1),
+    'job_salary': Job_Salary(page),
     'job_company_logo': Job_Logo(),
-    'job_posted': Job_Posted(request,page['datePosted']),
+    'job_posted': Job_Posted(page['datePosted']),
     'job_company': page['employerName'], 
     'job_link': page['jobUrl'],
     'coordinates': getGeoLocation(request,page['locationName'])
@@ -158,23 +152,17 @@ def LibraryDetailsAPI(request,Id):
     page = page.json()
     page = page['jobs'][0]
  
-    
-    try:
-        Salary = Job_Salary(request,page['salary'],2)
-    except:
-        Salary = "Competative"
-#=======================#
 
     job_entry = {
     'job_title': page['title'], 
     'job_location': page['location'], 
-    'job_type': page['type'], 
+    'job_type': page['type'][0], 
     'job_description': page['description'],
-    'job_salary': 'none',
+    'job_salary': Job_Salary(page),
     'job_company_logo': Job_Logo(page),
-    'job_posted': Job_Posted(page['date']),
+    'job_posted': Job_Posted(page['posted']),
     'job_company': page['agency']['title'], 
-    'job_link': page['url'],
+    'job_link': 'https://www.cv-library.co.uk'+page['url'],
     'coordinates': getGeoLocation(request,page['location'])
     }
     return job_entry

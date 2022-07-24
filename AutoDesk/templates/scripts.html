@@ -51,10 +51,11 @@
 
 <!-- Google Autocomplete -->
 <script>
+	initAutocomplete()
 	function initAutocomplete() {
 		var options = {
 			types: ['(cities)'],
-			// componentRestrictions: {country: "us"}
+			componentRestrictions: {country: "uk"}
 		};
 
 		var input = document.getElementById('autocomplete-input');

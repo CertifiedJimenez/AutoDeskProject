@@ -149,7 +149,7 @@
 					</div>
 
 					<div class="intro-search-field with-autocomplete" style="border-right: 0">
-						<div class="input-with-icon">
+						<div class="input-with-icon input-customfield-location">
 							<input id="autocomplete-input" class="with-border" type="text" placeholder="Online Job" value="{{searchParams.location}}">
 							<i class="icon-material-outline-location-on input-customfield-icon"></i>
 							</span>
@@ -183,7 +183,7 @@
 				<!-- Job Listing -->
 				<a href="{% url 'JobListing:Listing' jobs.job_urlpath jobs.job_id %}" target="_blank" class="job-listing">
 					<!-- Job Listing Details -->
-					<div class="job-listing-details">
+					<div class="job-listing-details" data-minimum="{{jobs.job_salary.min_salary}}" data-maximum="{{jobs.job_salary.max_salary}}">
 						<!-- Logo -->
 						<div class="job-listing-company-logo">
 							<img src="{{jobs.job_company_logo}}" alt="">
@@ -204,7 +204,7 @@
 									<li><i class="icon-material-outline-location-on"></i>{{jobs.job_location}}</li>
 									<li><i class="icon-material-outline-business-center"></i> Full Time</li>
 									<li><i class="icon-material-outline-access-time"></i> {{jobs.job_posted}}</li>
-									<li><i class="icon-material-outline-account-balance-wallet"></i> {{jobs.job_salary}}</li>
+									<li><i class="icon-material-outline-account-balance-wallet"></i> {{jobs.job_salary.price_range}}</li>
 								</ul>
 							</div>
 						</div>
@@ -324,42 +324,46 @@
 		}
 		});
 
-		let url = new URL(window.location.href);
-		//Built in search function
-		$( "#search-btn" ).click(function() {					
-			Job = $('#intro-keywords').val()
-			Location = $('#location').val()
-			search_url = '/Search/'+Job+'/'+Location+'/1'
-			window.open(search_url,"_self")
-		});
 
+		var salaryList = []
+		$( ".job-listing" ).each(function() {
+            minimum = parseFloat($(this).find('div.job-listing-details').attr('data-minimum'))
+            maximum = parseFloat($(this).find('div.job-listing-details').attr('data-maximum'))
+			if (isFinite(minimum)){
+			console.log(minimum,maximum)
+			salaryList = salaryList.concat(minimum, maximum);
+			}
+        });
+		salaryRange = [Math.min.apply(null, salaryList),Math.max.apply(null, salaryList)]
+		$('#SalaryRange').attr('data-slider-min',Math.min.apply(null, salaryList))
+		$('#SalaryRange').attr('data-slider-max',Math.max.apply(null, salaryList)) 
+		$('#SalaryRange').attr('data-slider-value','['+String(salaryRange)+']') 
+		
+		// $('#FilterSearch').click(function(){
 
+		//     //Salary Breakdown
+		//     Salary = $('#SalaryRange').attr('value')
+		//     SalaryRange = Salary.split(",");
+		//     console.log(SalaryRange)
 
-		$('#FilterSearch').click(function(){
+		//     data = {'valid':true, 'MinimumRange':SalaryRange[0], 'MaximumRange':SalaryRange[1]};
 
-			//Salary Breakdown
-			Salary = $('#SalaryRange').attr('value')
-			SalaryRange = Salary.split(",");
-			console.log(SalaryRange)
+		//     //Ajax Call
+		//     $.ajax({ 
+		//         type: "POST", 
+		//         url: "/Search/{{searchParams.title}}/{{searchParams.location}}/{{searchParams.page_no}}", 
+		//         headers: {'X-CSRFToken': csrftoken},
+		//         data: {"data": data},
+		//         success: function(){
+		//             location.reload();
+		//             console.log('run')
+		//         },
+		//         error: function(){
+		//             console.log('failed')
+		//         }
+		//     });						
 
-			data = {'valid':true, 'MinimumRange':SalaryRange[0], 'MaximumRange':SalaryRange[1]};
-
-			//Ajax Call
-			$.ajax({ 
-				type: "POST", 
-				url: "/Search/{{searchParams.title}}/{{searchParams.location}}/{{searchParams.page_no}}", 
-				headers: {'X-CSRFToken': csrftoken},
-				data: {"data": data},
-				success: function(){
-					location.reload();
-					console.log('run')
-				},
-				error: function(){
-					console.log('failed')
-				}
-			});						
-
-		});
+		// });
 
 	});
 

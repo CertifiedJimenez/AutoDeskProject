@@ -1,7 +1,12 @@
 .btn-custom-search {
     top: -12.5%;
+    justify-content: center;
 }
 
 .input-customfield-icon{
     top: 35%!important;
+}
+
+.input-customfield-location{
+width: -webkit-fill-available;
 }

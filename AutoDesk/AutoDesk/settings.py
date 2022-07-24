@@ -30,13 +30,13 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'JobSearch.apps.JobsearchConfig',
     'JobListing.apps.JoblistingConfig',
     'APIControl.apps.ApicontrolConfig',
     'HomePage.apps.HomepageConfig',
     'DataHandler.apps.DatahandlerConfig',
+    'Accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -89,6 +89,8 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
+
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {

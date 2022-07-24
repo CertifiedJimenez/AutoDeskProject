@@ -19,15 +19,16 @@
 				<nav id="navigation">
 					<ul id="responsive">
 
-						<li><a href="#" class="current">Home</a>
-							<ul class="dropdown-nav">
+						<li>
+							<a href="{% url 'HomePage:Index' %}" class="current">Home</a>
+							{% comment %} <ul class="dropdown-nav">
 								<li><a href="index.html">Home 1</a></li>
 								<li><a href="index-2.html">Home 2</a></li>
 								<li><a href="index-3.html">Home 3</a></li>
-							</ul>
+							</ul> {% endcomment %}
 						</li>
 
-						<li><a href="#">Find Work</a>
+						{% comment %} <li><a href="#">Find Work</a>
 							<ul class="dropdown-nav">
 								<li><a href="#">Browse Jobs</a>
 									<ul class="dropdown-nav">
@@ -52,9 +53,9 @@
 								<li><a href="single-task-page.html">Task Page</a></li>
 								<li><a href="single-company-profile.html">Company Profile</a></li>
 							</ul>
-						</li>
+						</li> {% endcomment %}
 
-						<li><a href="#">For Employers</a>
+						{% comment %} <li><a href="#">For Employers</a>
 							<ul class="dropdown-nav">
 								<li><a href="#">Find a Freelancer</a>
 									<ul class="dropdown-nav">
@@ -68,9 +69,9 @@
 								<li><a href="dashboard-post-a-job.html">Post a Job</a></li>
 								<li><a href="dashboard-post-a-task.html">Post a Task</a></li>
 							</ul>
-						</li>
+						</li> {% endcomment %}
 
-						<li><a href="#">Dashboard</a>
+						{% comment %} <li><a href="#">Dashboard</a>
 							<ul class="dropdown-nav">
 								<li><a href="dashboard.html">Dashboard</a></li>
 								<li><a href="dashboard-messages.html">Messages</a></li>
@@ -93,9 +94,9 @@
 								</li>
 								<li><a href="dashboard-settings.html">Settings</a></li>
 							</ul>
-						</li>
+						</li> {% endcomment %}
 
-						<li><a href="#">Pages</a>
+						{% comment %} <li><a href="#">Pages</a>
 							<ul class="dropdown-nav">
 								<li>
 									<a href="#">Open Street Map</a>
@@ -118,7 +119,7 @@
 								<li><a href="pages-404.html">404 Page</a></li>
 								<li><a href="pages-contact.html">Contact</a></li>
 							</ul>
-						</li>
+						</li> {% endcomment %}
 
 					</ul>
 				</nav>
@@ -326,6 +327,23 @@
 
 			</div>
 			<!-- Right Side Content / End -->
+			{% else %}
+				<div class="right-side">
+
+					<div class="header-widget">
+						<a href="#sign-in-dialog" class="popup-with-zoom-anim log-in-button"><i class="icon-feather-log-in"></i> <span>Log In / Register</span></a>
+					</div>
+
+					<!-- Mobile Navigation Button -->
+					<span class="mmenu-trigger">
+						<button class="hamburger hamburger--collapse" type="button">
+							<span class="hamburger-box">
+								<span class="hamburger-inner"></span>
+							</span>
+						</button>
+					</span>
+
+				</div>
 			{% endif %}
 
 		</div>
